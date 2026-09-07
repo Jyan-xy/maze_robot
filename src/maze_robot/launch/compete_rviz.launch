@@ -1,0 +1,19 @@
+<launch>
+    <!-- 加载比赛地图 -->
+    <node name="map_server" pkg="map_server" type="map_server" output="screen"
+          args="$(find maze_robot)/map/my_maze_map.yaml" />
+
+    <!-- AMCL 定位 -->
+    <include file="$(find maze_robot)/launch/amcl.launch" />
+
+    <!-- move_base 导航 -->
+    <include file="$(find maze_robot)/launch/move_base.launch" />
+
+    <!-- 启动 rviz，加载导航配置 -->
+    <node pkg="rviz" type="rviz" name="rviz" output="screen"
+          args="-d $(find maze_robot)/config/my_maze_map.rviz" />
+          
+<!-- 已在 compete_gazebo.launch 中启动，这里注释掉 -->
+<!-- <node pkg="joint_state_publisher" name="joint_state_publisher" type="joint_state_publisher" /> -->
+<!-- <node pkg="robot_state_publisher" name="robot_state_publisher" type="robot_state_publisher" /> -->
+</launch>

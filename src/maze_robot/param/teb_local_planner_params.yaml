@@ -1,0 +1,49 @@
+ TebLocalPlannerROS:
+  dt_ref: 0.3
+  dt_hysteresis: 0.1
+  max_samples: 500
+  global_plan_overwrite_orientation: true
+  allow_init_with_backwards_motion: false
+  max_global_plan_lookahead_dist: 3.0
+  global_plan_viapoint_sep: 0.3
+  force_reinit_new_goal_dist: 1.0
+  feasibility_check_no_poses: 5
+
+  max_vel_x: 0.15
+  max_vel_x_backwards: 0.0
+  max_vel_theta: 0.4
+  acc_lim_x: 0.3
+  acc_lim_theta: 0.5
+
+  footprint_model:
+    type: "circular"
+    radius: 0.06
+
+  xy_goal_tolerance: 0.08
+  yaw_goal_tolerance: 0.1
+  free_goal_vel: false
+
+  min_obstacle_dist: 0.08
+  inflation_dist: 0.1
+  include_costmap_obstacles: true
+  costmap_obstacles_behind_robot_dist: 1.0
+  obstacle_poses_affected: 15
+
+  weight_obstacle: 100.0
+  weight_kinematics_forward_drive: 1000.0
+  weight_kinematics_turning_radius: 0.0
+  min_turning_radius: 0.0
+  weight_path_length: 30.0
+  weight_goal_line: 30.0
+
+  oscillation_recovery: true
+  oscillation_v_eps: 0.1
+  oscillation_omega_eps: 0.1
+  
+  # 关键：开启异步规划
+  enable_homotopy_class_planning: true
+  enable_multithreading: true
+
+  # 减少每次规划的迭代次数，让响应更快
+  no_inner_iterations: 3         # 默认5
+  no_outer_iterations: 2         # 默认4

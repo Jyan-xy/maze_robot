@@ -1,0 +1,65 @@
+<launch>
+    <param name="use_sim_time" value="true"/>
+
+    <!-- 加载机器人模型（用于 TF 树） -->
+    <param name="robot_description"
+           command="$(find xacro)/xacro $(find maze_robot)/xacro/robot_gazebo.xacro" />
+
+    <!-- gmapping 建图节点 -->
+    <node pkg="gmapping" type="slam_gmapping" name="slam_gmapping" output="screen">
+        <remap from="scan" to="scan"/>
+
+        <!-- 坐标系 -->
+        <param name="base_frame" value="base_footprint"/>
+        <param name="odom_frame" value="odom"/>
+        <param name="map_frame"  value="map"/>
+
+        <!-- 地图更新 -->
+        <param name="map_update_interval" value="5.0"/>
+        <param name="maxUrange" value="16.0"/>
+
+        <!-- 扫描匹配 -->
+        <param name="sigma" value="0.05"/>
+        <param name="kernelSize" value="1"/>
+        <param name="lstep" value="0.05"/>
+        <param name="astep" value="0.05"/>
+        <param name="iterations" value="5"/>
+        <param name="lsigma" value="0.075"/>
+        <param name="ogain" value="3.0"/>
+        <param name="lskip" value="0"/>
+
+        <!-- 里程计误差 -->
+        <param name="srr" value="0.1"/>
+        <param name="srt" value="0.2"/>
+        <param name="str" value="0.1"/>
+        <param name="stt" value="0.2"/>
+
+        <!-- 更新触发 -->
+        <param name="linearUpdate" value="1.0"/>
+        <param name="angularUpdate" value="0.5"/>
+        <param name="temporalUpdate" value="3.0"/>
+
+        <!-- 粒子滤波 -->
+        <param name="resampleThreshold" value="0.5"/>
+        <param name="particles" value="30"/>
+
+        <!-- 地图范围 -->
+        <param name="xmin" value="-50.0"/>
+        <param name="ymin" value="-50.0"/>
+        <param name="xmax" value="50.0"/>
+        <param name="ymax" value="50.0"/>
+        <param name="delta" value="0.05"/>
+
+        <!-- 似然域 -->
+        <param name="llsamplerange" value="0.01"/>
+        <param name="llsamplestep" value="0.01"/>
+        <param name="lasamplerange" value="0.005"/>
+        <param name="lasamplestep" value="0.005"/>
+    </node>
+
+    <!-- RViz 建图可视化（Fixed Frame=odom，避免建图初期 map 帧缺失导致空白） -->
+    <node pkg="rviz" type="rviz" name="rviz"
+          args="-d $(find maze_robot)/config/gmapping.rviz" />
+
+</launch>
+
